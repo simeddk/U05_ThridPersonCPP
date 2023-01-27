@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Components/CStateComponent.h"
 #include "CPlayer.generated.h"
 
 UCLASS()
@@ -33,6 +34,9 @@ private:
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCMontagesComponent* Montages;
 
+	UPROPERTY(VisibleDefaultsOnly)
+		class UCActionComponent* Action;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -47,4 +51,25 @@ private:
 	void OnHorizontalLook(float InAxis);
 	void OnVerticalLook(float InAxis);
 	void OnZoom(float InAxis);
+
+	//Action Mapping
+	void OnEvade();
+	void OnWalk();
+	void OffWalk();
+
+	void OnFist();
+	void OnOneHand();
+	void OnTwoHand();
+
+private:
+	void Begin_Roll();
+	void Begin_BackStep();
+
+public:
+	void End_Roll();
+	void End_BackStep();
+
+private:
+	UFUNCTION()
+		void OnStateTypeChanged(EStateType InPrevType, EStateType InNewType);
 };
