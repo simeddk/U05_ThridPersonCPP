@@ -32,10 +32,26 @@ class GAME_API UCActionData : public UDataAsset
 	GENERATED_BODY()
 
 public:
+	void BeginPlay(class ACharacter* InOnwerCharacter);
+
+public:
+	FORCEINLINE class ACEquipment* GetEquipment() { return Equipment; }
+
+private:
+	FString GetLabelName(class ACharacter* InOnwerCharacter, FString InMiddleName);
+
+public:
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+		TSubclassOf<class ACEquipment> EquipmentClass;
+
+public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		FEquipmentData EquipmentData;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		FLinearColor EquipmentColor;
 	
+
+private:
+	class ACEquipment* Equipment;
 };

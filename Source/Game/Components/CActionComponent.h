@@ -61,7 +61,11 @@ public:
 private:
 	void SetMode(EActionType InNewType);
 	void ChangeType(EActionType InNewType);
-		
+
+private:
+	UPROPERTY(EditDefaultsOnly)
+		class UCActionData* Datas[(int32)EActionType::Max];
+
 private:
 	EActionType Type;
 };
