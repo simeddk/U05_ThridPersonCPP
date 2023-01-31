@@ -82,9 +82,6 @@ void UCActionComponent::SetMode(EActionType InNewType)
 		Datas[(int32)InNewType]->GetEquipment()->Equip();
 
 	ChangeType(InNewType);
-	//Todo. 노티파이
-	//Todo. 원핸드 꺼내고 폰컨트롤 켜줘
-	//Todo. 구르거나 백대시 버그 수정
 }
 
 void UCActionComponent::ChangeType(EActionType InNewType)

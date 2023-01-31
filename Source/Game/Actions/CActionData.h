@@ -42,6 +42,9 @@ private:
 
 public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+		TSubclassOf<class ACAttachment> AttachmentClass;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		TSubclassOf<class ACEquipment> EquipmentClass;
 
 public:
@@ -53,5 +56,6 @@ public:
 	
 
 private:
+	class ACAttachment* Attachment;
 	class ACEquipment* Equipment;
 };

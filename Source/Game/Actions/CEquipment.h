@@ -6,6 +6,7 @@
 #include "CEquipment.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FEquipmentDelegate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FUnequipmentDelegate);
 
 UCLASS()
 class GAME_API ACEquipment : public AActor
@@ -39,7 +40,11 @@ public:
 	void Unequip_Implementation();
 
 public:
-	FEquipmentDelegate OnEquipmentDelegate;
+	UPROPERTY(BlueprintAssignable)
+		FEquipmentDelegate OnEquipmentDelegate;
+
+	UPROPERTY(BlueprintAssignable)
+		FUnequipmentDelegate OnUnequipmentDelegate;
 
 protected:
 	UPROPERTY(BlueprintReadOnly)
