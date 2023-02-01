@@ -4,7 +4,6 @@
 #include "Actions/CDoAction.h"
 #include "CDoAction_Melee.generated.h"
 
-//Todo. 여기부터 하면 됨^^
 UCLASS()
 class GAME_API ACDoAction_Melee : public ACDoAction
 {

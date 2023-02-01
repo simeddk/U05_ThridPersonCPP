@@ -2,6 +2,7 @@
 #include "Global.h"
 #include "Actions/CActionData.h"
 #include "Actions/CEquipment.h"
+#include "Actions/CDoAction.h"
 #include "GameFramework/Character.h"
 
 UCActionComponent::UCActionComponent()
@@ -26,7 +27,6 @@ void UCActionComponent::BeginPlay()
 
 void UCActionComponent::SetUnaremdMode()
 {
-
 	if (!!Datas[(int32)Type] && Datas[(int32)Type]->GetEquipment())
 		Datas[(int32)Type]->GetEquipment()->Unequip();
 
@@ -63,6 +63,19 @@ void UCActionComponent::SetMagicMode()
 void UCActionComponent::SetStormMode()
 {
 	SetMode(EActionType::Storm);
+}
+
+void UCActionComponent::DoAction()
+{
+	CheckTrue(IsUnaremdMode());
+
+	if (!!Datas[(int32)Type] && Datas[(int32)Type]->GetDoAction())
+	{
+		ACDoAction* doAction = Datas[(int32)Type]->GetDoAction();
+
+		if (!!doAction)
+			doAction->DoAction();
+	}
 }
 
 void UCActionComponent::SetMode(EActionType InNewType)

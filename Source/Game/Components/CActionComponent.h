@@ -59,6 +59,9 @@ public:
 	void SetStormMode();
 
 public:
+	void DoAction();
+
+public:
 	UPROPERTY(BlueprintAssignable)
 		FActionTypeChanged OnActionTypeChanged;
 
