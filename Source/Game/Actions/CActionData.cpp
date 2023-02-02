@@ -32,7 +32,6 @@ void UCActionData::BeginPlay(ACharacter* InOnwerCharacter)
 		}
 	}
 
-
 	if (!!DoActionClass)
 	{
 		DoAction = InOnwerCharacter->GetWorld()->SpawnActorDeferred<ACDoAction>(DoActionClass, transform, InOnwerCharacter);
@@ -40,6 +39,12 @@ void UCActionData::BeginPlay(ACharacter* InOnwerCharacter)
 		DoAction->SetDatas(DoActionDatas);
 		DoAction->SetActorLabel(GetLabelName(InOnwerCharacter, "DoAction"));
 		UGameplayStatics::FinishSpawningActor(DoAction, transform);
+
+		if (!!Attachment)
+		{
+			Attachment->OnAttachmentBeginOverlap.AddDynamic(DoAction, &ACDoAction::OnAttachmentBeginOverlap);
+			Attachment->OnAttachmentEndOverlap.AddDynamic(DoAction, &ACDoAction::OnAttachmentEndOverlap);
+		}
 	}
 }
 
