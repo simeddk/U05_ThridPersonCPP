@@ -26,10 +26,16 @@ private:
 	UFUNCTION()
 		void OnStateTypeChanged(EStateType InPrevType, EStateType InNewType);
 
+	UFUNCTION()
+		void RestoreLogoColor();
+
 	void Hitted();
 	void Dead();
 
 private:
+	UPROPERTY(EditAnywhere)
+		float LaunchValue = 25.f;
+
 	UPROPERTY(VisibleDefaultsOnly)
 		class UWidgetComponent* NameWidget;
 

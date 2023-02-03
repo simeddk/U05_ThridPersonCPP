@@ -1,5 +1,6 @@
 #include "CEnemy.h"
 #include "Global.h"
+#include "Actions/CActionData.h"
 #include "Components/CStatusComponent.h"
 #include "Components/CMontagesComponent.h"
 #include "Components/CActionComponent.h"
@@ -91,8 +92,25 @@ void ACEnemy::BeginPlay()
 
 void ACEnemy::ChangeColor(FLinearColor InColor)
 {
+	if (State->IsHittedMode())
+	{
+		LogoMaterial->SetVectorParameterValue("LogoLightColor", InColor);
+		LogoMaterial->SetScalarParameterValue("IsHitted", 1);
+
+		return;
+	}
+
 	BodyMaterial->SetVectorParameterValue("BodyColor", InColor);
 	LogoMaterial->SetVectorParameterValue("BodyColor", InColor);
+}
+
+
+void ACEnemy::RestoreLogoColor()
+{
+	FLinearColor color = Action->GetCurrent()->GetEquipmentColor();
+
+	LogoMaterial->SetVectorParameterValue("LogoLightColor", color);
+	LogoMaterial->SetScalarParameterValue("IsHitted", 0);
 }
 
 void ACEnemy::OnStateTypeChanged(EStateType InPrevType, EStateType InNewType)
@@ -132,6 +150,19 @@ void ACEnemy::Hitted()
 
 	//Play Hit Montage
 	Montages->PlayHitted();
+
+	//Lauch HitBack
+	FVector start = GetActorLocation();
+	FVector target = Attacker->GetActorLocation();
+	FVector direction = start - target;
+	direction.Normalize();
+	
+	LaunchCharacter(direction * LaunchValue * DamageValue, true, false);
+
+	//Change LogoColor
+	ChangeColor(FLinearColor::Red * 35.f);
+	UKismetSystemLibrary::K2_SetTimer(this, "RestoreLogoColor", 1.f, false);
+
 }
 
 void ACEnemy::Dead()
