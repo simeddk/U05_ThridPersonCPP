@@ -32,9 +32,15 @@ private:
 	void Hitted();
 	void Dead();
 
+	UFUNCTION()
+		void End_Dead();
+
 private:
 	UPROPERTY(EditAnywhere)
 		float LaunchValue = 25.f;
+
+	UPROPERTY(EditAnywhere)
+		float DeadLaunchValue = 1e+7f;
 
 	UPROPERTY(VisibleDefaultsOnly)
 		class UWidgetComponent* NameWidget;
