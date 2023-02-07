@@ -1,6 +1,7 @@
 #include "CEnemy.h"
 #include "Global.h"
 #include "Actions/CActionData.h"
+#include "Actions/CThrow.h"
 #include "Components/CStatusComponent.h"
 #include "Components/CMontagesComponent.h"
 #include "Components/CActionComponent.h"
@@ -129,8 +130,6 @@ float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContro
 	Causer = DamageCauser;
 	Attacker = Cast<ACharacter>(EventInstigator->GetPawn());
 
-	CLog::Print(DamageValue, -1, 1.f);
-
 	Status->DecreaseHealth(DamageValue);
 
 	if (Status->GetHealth() <= 0.f)
@@ -186,9 +185,12 @@ void ACEnemy::Dead()
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 
 	FVector start = GetActorLocation();
-	FVector target = Attacker->GetActorLocation();
+	FVector target = Causer->GetActorLocation();
 	FVector direction = start - target;
 	direction.Normalize();
+
+	if (Causer->IsA<ACThrow>())
+		DeadLaunchValue *= 0.075f;
 
 	GetMesh()->AddForce(direction * DamageValue * DeadLaunchValue);
 

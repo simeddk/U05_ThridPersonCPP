@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Actions/CDoAction.h"
+#include "Components/CActionComponent.h"
 #include "CDoAction_Throw.generated.h"
 
 UCLASS()
@@ -22,6 +23,15 @@ public:
 	virtual void OffAim() override;
 
 private:
+	UFUNCTION()
+		void OnThrowBeginOverlap(FHitResult InHitResult);
+
+	UFUNCTION()
+		void AbortByActionTypeChanged(EActionType InPrevType, EActionType InNewType);
+
+private:
 	UPROPERTY()
 		class UCAim* Aim;
+
+	ACThrow* ThrowObject;
 };

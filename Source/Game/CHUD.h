@@ -15,7 +15,7 @@ public:
 	virtual void DrawHUD() override;
 
 	FORCEINLINE void VisibleAim() { bVisibleAim = true; }
-	FORCEINLINE void HiddenAim() { bVisibleAim = true; }
+	FORCEINLINE void HiddenAim() { bVisibleAim = false; }
 
 private:
 	UPROPERTY(EditDefaultsOnly)

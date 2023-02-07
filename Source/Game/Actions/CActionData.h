@@ -55,6 +55,9 @@ public:
 
 	UPROPERTY(EditAnywhere)
 		FString SpecificCollisionName = "None";
+
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<class ACThrow> ThrowClass;
 };
 
 /*------------------------------------------------------------------------
