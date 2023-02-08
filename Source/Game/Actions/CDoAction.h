@@ -14,6 +14,7 @@ public:
 	ACDoAction();
 
 	FORCEINLINE void SetDatas(TArray<FDoActionData> InDatas) { Datas = InDatas; }
+	FORCEINLINE void SetEquipped(const bool* InEquipped) { bEquipped = InEquipped; }
 
 protected:
 	virtual void BeginPlay() override;
@@ -50,5 +51,6 @@ protected:
 
 protected:
 	TArray<FDoActionData> Datas;
+	const bool* bEquipped;
 
 };
