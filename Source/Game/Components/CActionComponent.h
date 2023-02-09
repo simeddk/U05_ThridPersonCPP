@@ -25,7 +25,7 @@ protected:
 
 public:
 	UFUNCTION(BlueprintPure)
-		FORCEINLINE class UCActionData* GetCurrent() { return Datas[(int32)Type]; }
+		FORCEINLINE class UCActionObjectContainer* GetCurrent() { return DataObjects[(int32)Type]; }
 
 public:
 	UFUNCTION(BlueprintPure)
@@ -50,13 +50,13 @@ public:
 		FORCEINLINE bool IsStormBallMode() { return Type == EActionType::Storm; }
 
 public:
-	void SetUnaremdMode();
-	void SetFistMode();
-	void SetOneHandMode();
-	void SetTwoHandMode();
-	void SetWarpMode();
-	void SetMagicBallMode();
-	void SetStormMode();
+	UFUNCTION(BlueprintCallable) void SetUnaremdMode();
+	UFUNCTION(BlueprintCallable) void SetFistMode();
+	UFUNCTION(BlueprintCallable) void SetOneHandMode();
+	UFUNCTION(BlueprintCallable) void SetTwoHandMode();
+	UFUNCTION(BlueprintCallable) void SetWarpMode();
+	UFUNCTION(BlueprintCallable) void SetMagicBallMode();
+	UFUNCTION(BlueprintCallable) void SetStormMode();
 
 public:
 	void DoAction();
@@ -79,7 +79,11 @@ private:
 
 private:
 	UPROPERTY(EditDefaultsOnly)
-		class UCActionData* Datas[(int32)EActionType::Max];
+		class UCActionData* Datas[(int32)EActionType::Max]; //DataAsset
+
+	UPROPERTY()
+		class UCActionObjectContainer* DataObjects[(int32)EActionType::Max]; //Spawned Object
+
 
 private:
 	EActionType Type;

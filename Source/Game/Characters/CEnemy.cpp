@@ -88,7 +88,7 @@ void ACEnemy::BeginPlay()
 	if (!!healthWidgetObject)
 		healthWidgetObject->Update(Status->GetHealth(), Status->GetMaxHealth());
 
-	Action->SetUnaremdMode();
+	//Action->SetUnaremdMode();
 
 }
 
