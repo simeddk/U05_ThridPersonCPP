@@ -108,6 +108,7 @@ void ACEnemy::ChangeColor(FLinearColor InColor)
 
 	BodyMaterial->SetVectorParameterValue("BodyColor", InColor);
 	LogoMaterial->SetVectorParameterValue("BodyColor", InColor);
+
 }
 
 

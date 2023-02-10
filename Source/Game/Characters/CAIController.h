@@ -14,6 +14,10 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
+public:
+	float GetSightRadius();
+	FORCEINLINE float GetBehaviorRange() { return BehaviorRange;  }
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -21,11 +25,18 @@ protected:
 	virtual void OnUnPossess() override;
 
 private:
+	UFUNCTION()
+		void OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors);
+
+private:
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCBehaviorComponent* Behavior;
 
 	UPROPERTY(VisibleDefaultsOnly)
 		class UAIPerceptionComponent* Perception;
+
+	UPROPERTY(EditAnywhere)
+		float BehaviorRange = 150.f;
 
 private:
 	class ACEnemy_AI* OwnerEnemy;
