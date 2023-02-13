@@ -33,6 +33,13 @@ ACAIController::ACAIController()
 void ACAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	CheckFalse(bDrawDebug);
+
+	FVector center = OwnerEnemy->GetActorLocation();
+	center.Z -= InitHeight;
+	DrawDebugCircle(GetWorld(), center, Sight->SightRadius, 50, FColor::Green, false, -1, 0, 0, FVector::RightVector, FVector::ForwardVector);
+	DrawDebugCircle(GetWorld(), center, BehaviorRange, 50, FColor::Red, false, -1, 0, 0, FVector::RightVector, FVector::ForwardVector);
 }
 
 void ACAIController::BeginPlay()
