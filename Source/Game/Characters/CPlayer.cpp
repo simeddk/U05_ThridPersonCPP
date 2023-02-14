@@ -277,6 +277,14 @@ void ACPlayer::End_BackStep()
 	State->SetIdleMode();
 }
 
+void ACPlayer::Hitted()
+{
+}
+
+void ACPlayer::Dead()
+{
+}
+
 void ACPlayer::ChangeColor(FLinearColor InColor)
 {
 	BodyMaterial->SetVectorParameterValue("BodyColor", InColor);

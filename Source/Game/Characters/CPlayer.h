@@ -79,6 +79,9 @@ public:
 	void End_Roll();
 	void End_BackStep();
 
+	virtual void Hitted() override;
+	virtual void Dead() override;
+
 public:
 	virtual void ChangeColor(FLinearColor InColor);
 

@@ -85,6 +85,7 @@ void ACEnemy::BeginPlay()
 	{
 		nameWidgetObject->SetPawnName(GetName());
 		nameWidgetObject->SetControllerName(GetController()->GetName());
+		nameWidgetObject->SetVisibility(visibleType);
 	}
 
 	HealthWidget->InitWidget();

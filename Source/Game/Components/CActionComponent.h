@@ -41,7 +41,7 @@ public:
 		FORCEINLINE bool IsTwoHandMode() { return Type == EActionType::TwoHand; }
 
 	UFUNCTION(BlueprintPure)
-		FORCEINLINE bool IsWarpHandMode() { return Type == EActionType::Warp; }
+		FORCEINLINE bool IsWarpMode() { return Type == EActionType::Warp; }
 
 	UFUNCTION(BlueprintPure)
 		FORCEINLINE bool IsMagicBallMode() { return Type == EActionType::MagicBall; }
