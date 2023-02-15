@@ -136,6 +136,8 @@ float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContro
 	Causer = DamageCauser;
 	Attacker = Cast<ACharacter>(EventInstigator->GetPawn());
 
+	Action->AbortByDamaged();
+
 	Status->DecreaseHealth(DamageValue);
 
 	if (Status->GetHealth() <= 0.f)
@@ -158,6 +160,7 @@ void ACEnemy::Hitted()
 
 	//Play Hit Montage
 	Montages->PlayHitted();
+	Status->SetMove();
 
 	//Lauch HitBack
 	FVector start = GetActorLocation();

@@ -15,6 +15,8 @@ class GAME_API ACPlayer : public ACharacter, public IICharacter, public IGeneric
 public:
 	ACPlayer();
 
+	FORCEINLINE class UCUserWidget_ActionContainer* GetActionContainerWidget() { return ActionContainerWidget; }
+
 private:
 	//SceneComponent
 	UPROPERTY(VisibleDefaultsOnly)
@@ -46,6 +48,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	FGenericTeamId GetGenericTeamId() const override;
+
+	
 
 private:
 	//Axis Mapping
@@ -79,8 +83,11 @@ public:
 	void End_Roll();
 	void End_BackStep();
 
+public:
+	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 	virtual void Hitted() override;
 	virtual void Dead() override;
+	virtual void End_Dead() override;
 
 public:
 	virtual void ChangeColor(FLinearColor InColor);
@@ -93,7 +100,16 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 		uint8 TeamID = 0;
 
+	UPROPERTY(EditDefaultsOnly)
+		TSubclassOf<class UCUserWidget_ActionContainer> ActionContainerWidgetClass;
+
 private:
 	class UMaterialInstanceDynamic* BodyMaterial;
 	class UMaterialInstanceDynamic* LogoMaterial;
+
+	class ACharacter* Attacker;
+	class AActor* Causer;
+	float DamageValue;
+
+	class UCUserWidget_ActionContainer* ActionContainerWidget;
 };

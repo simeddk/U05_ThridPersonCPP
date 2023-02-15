@@ -23,6 +23,8 @@ void UBTService_Melee::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMe
 	UCStateComponent* state = CHelpers::GetComponent<UCStateComponent>(aiPawn);
 	UCPatrolComponent* patrol = CHelpers::GetComponent<UCPatrolComponent>(aiPawn);
 	
+	CheckTrue(state->IsDeadMode());
+
 	if (state->IsHittedMode())
 	{
 		behavior->SetHittedMode();
@@ -40,6 +42,15 @@ void UBTService_Melee::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMe
 
 		behavior->SetWaitMode();
 		return;
+	}
+	else
+	{
+		UCStateComponent* targetState = CHelpers::GetComponent<UCStateComponent>(target);
+		if (targetState->IsDeadMode())
+		{
+			behavior->SetWaitMode();
+			return;
+		}
 	}
 
 	float distane = aiPawn->GetDistanceTo(target);

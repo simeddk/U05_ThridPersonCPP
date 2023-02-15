@@ -4,11 +4,14 @@
 #include "Components/COptionComponent.h"
 #include "Components/CMontagesComponent.h"
 #include "Components/CActionComponent.h"
+#include "Widgets/CUserWidget_ActionContainer.h"
+#include "Widgets/CUserWidget_ActionItem.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Materials/MaterialInstanceConstant.h"
 #include "Materials/MaterialInstanceDynamic.h"
+#include "Components/CapsuleComponent.h"
 
 ACPlayer::ACPlayer()
 {
@@ -49,6 +52,9 @@ ACPlayer::ACPlayer()
 	GetCharacterMovement()->MaxWalkSpeed = Status->GetRunSpeed();
 	GetCharacterMovement()->RotationRate = FRotator(0, 720, 0);
 	GetCharacterMovement()->bOrientRotationToMovement = true;
+
+	//ActionWidget
+	CHelpers::GetClass<UCUserWidget_ActionContainer>(&ActionContainerWidgetClass, "/Game/Widgets/WB_ActionContainer");
 }
 
 void ACPlayer::BeginPlay()
@@ -68,12 +74,12 @@ void ACPlayer::BeginPlay()
 	GetMesh()->SetMaterial(0, BodyMaterial);
 	GetMesh()->SetMaterial(1, LogoMaterial);
 
-
-
-
 	State->OnStateTypeChanged.AddDynamic(this, &ACPlayer::OnStateTypeChanged);
 
 	Action->SetUnaremdMode();
+
+	ActionContainerWidget = CreateWidget<UCUserWidget_ActionContainer, APlayerController>(GetController<APlayerController>(), ActionContainerWidgetClass);
+	ActionContainerWidget->AddToViewport();
 }
 
 void ACPlayer::Tick(float DeltaTime)
@@ -88,6 +94,8 @@ void ACPlayer::OnStateTypeChanged(EStateType InPrevType, EStateType InNewType)
 	{
 		case EStateType::Roll:		Begin_Roll();			break;
 		case EStateType::BackStep:	Begin_BackStep();		break;
+		case EStateType::Hitted:	Hitted();				break;
+		case EStateType::Dead:		Dead();					break;
 	}
 }
 
@@ -277,12 +285,50 @@ void ACPlayer::End_BackStep()
 	State->SetIdleMode();
 }
 
+float ACPlayer::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	DamageValue = Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
+	Causer = DamageCauser;
+	Attacker = Cast<ACharacter>(EventInstigator->GetPawn());
+
+	Action->AbortByDamaged();
+
+	Status->DecreaseHealth(DamageValue);
+
+	if (Status->GetHealth() <= 0.f)
+	{
+		State->SetDeadMode();
+		return DamageValue;
+	}
+
+	State->SetHittedMode();
+
+	return DamageValue;
+}
+
 void ACPlayer::Hitted()
 {
+	Montages->PlayHitted();
+	Status->SetMove();
 }
 
 void ACPlayer::Dead()
 {
+	CheckFalse(State->IsDeadMode());
+
+	//All Weapon Collision Disable
+	Action->Dead();
+
+	//Play Dead Montage
+	Montages->PlayDead();
+	GetCapsuleComponent()->SetCollisionProfileName("Spectator");
+}
+
+void ACPlayer::End_Dead()
+{
+	Action->End_Dead();
+
+	UKismetSystemLibrary::QuitGame(GetWorld(), GetController<APlayerController>(), EQuitPreference::Quit, false);
 }
 
 void ACPlayer::ChangeColor(FLinearColor InColor)

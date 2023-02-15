@@ -21,6 +21,8 @@ void UBTService_Wizard::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 	ACEnemy_AI* aiPawn = Cast<ACEnemy_AI>(controller->GetPawn());
 	UCStateComponent* state = CHelpers::GetComponent<UCStateComponent>(aiPawn);
 
+	CheckTrue(state->IsDeadMode());
+
 	if (state->IsHittedMode())
 	{
 		behavior->SetHittedMode();
@@ -34,6 +36,15 @@ void UBTService_Wizard::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 		controller->ClearFocus(EAIFocusPriority::Gameplay);
 
 		return;
+	}
+	else
+	{
+		UCStateComponent* targetState = CHelpers::GetComponent<UCStateComponent>(target);
+		if (targetState->IsDeadMode())
+		{
+			behavior->SetWaitMode();
+			return;
+		}
 	}
 
 	controller->SetFocus(target);

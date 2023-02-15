@@ -69,6 +69,8 @@ public:
 
 	void OffAllCollisions();
 
+	void AbortByDamaged();
+
 public:
 	UPROPERTY(BlueprintAssignable)
 		FActionTypeChanged OnActionTypeChanged;

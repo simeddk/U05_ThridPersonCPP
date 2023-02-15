@@ -34,7 +34,7 @@ private:
 	void Dead() override;
 
 	UFUNCTION()
-		void End_Dead();
+		void End_Dead() override;
 
 private:
 	UPROPERTY(EditAnywhere)

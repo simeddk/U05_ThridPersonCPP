@@ -30,6 +30,8 @@ public:
 	virtual void OnAim() {};
 	virtual void OffAim() {};
 
+	virtual void Abort() {}
+
 
 	UFUNCTION()
 		virtual void OnAttachmentBeginOverlap(class ACharacter* InAttacker, class AActor* InCauser, class ACharacter* InOtherCharacter) {};
