@@ -44,6 +44,9 @@ private:
 protected:
 	virtual void BeginPlay() override;
 
+private:
+	void BindActionItem();
+
 public:	
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -58,22 +61,27 @@ private:
 	void OnHorizontalLook(float InAxis);
 	void OnVerticalLook(float InAxis);
 	void OnZoom(float InAxis);
+	
 
 	//Action Mapping
 	void OnEvade();
 	void OnWalk();
 	void OffWalk();
 
-	void OnFist();
-	void OnOneHand();
-	void OnTwoHand();
-	void OnMagicBall();
-	void OnWarp();
+	UFUNCTION() void OnFist();
+	UFUNCTION() void OnOneHand();
+	UFUNCTION() void OnTwoHand();
+	UFUNCTION() void OnMagicBall();
+	UFUNCTION() void OnWarp();
+	UFUNCTION() void OnStorm();
 
 	void OnDoAction();
 
 	void OnAim();
 	void OffAim();
+
+	void OnActionSwitch();
+	void OffActionSwitch();
 
 private:
 	void Begin_Roll();
