@@ -66,6 +66,9 @@ private:
 
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCStatusComponent* Status;
+	
+	UPROPERTY(VisibleDefaultsOnly)
+		class UCDissolveComponent* Dissolve;
 
 private:
 	class UMaterialInstanceDynamic* BodyMaterial;

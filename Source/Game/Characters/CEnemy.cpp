@@ -5,6 +5,7 @@
 #include "Components/CStatusComponent.h"
 #include "Components/CMontagesComponent.h"
 #include "Components/CActionComponent.h"
+#include "Components/CDissolveComponent.h"
 #include "Widgets/CUserWidget_Name.h"
 #include "Widgets/CUserWidget_Health.h"
 #include "Materials/MaterialInstanceConstant.h"
@@ -24,6 +25,7 @@ ACEnemy::ACEnemy()
 	CHelpers::CreateActorComponent(this, &Montages, "Montages");
 	CHelpers::CreateActorComponent(this, &Status, "Status");
 	CHelpers::CreateActorComponent(this, &State, "State");
+	CHelpers::CreateActorComponent(this, &Dissolve, "Dissolve");
 
 	//Component Settings
 	GetMesh()->SetRelativeLocation(FVector(0, 0, -88));
@@ -115,6 +117,8 @@ void ACEnemy::ChangeColor(FLinearColor InColor)
 
 void ACEnemy::RestoreLogoColor()
 {
+	CheckTrue(State->IsDeadMode());
+
 	FLinearColor color = Action->GetCurrent()->GetEquipmentColor();
 
 	LogoMaterial->SetVectorParameterValue("LogoLightColor", color);
@@ -193,6 +197,9 @@ void ACEnemy::Dead()
 	GetMesh()->SetSimulatePhysics(true);
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 
+	//Play Dissolve
+	Dissolve->Play();
+
 	FVector start = GetActorLocation();
 	FVector target = Causer->GetActorLocation();
 	FVector direction = start - target;
@@ -209,6 +216,9 @@ void ACEnemy::Dead()
 
 void ACEnemy::End_Dead()
 {
+	//Stop Dissolve
+	Dissolve->Stop();
+
 	Action->End_Dead();
 
 	Destroy();
