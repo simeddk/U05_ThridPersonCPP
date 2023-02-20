@@ -4,6 +4,7 @@
 #include "Components/COptionComponent.h"
 #include "Components/CMontagesComponent.h"
 #include "Components/CActionComponent.h"
+#include "Components/CFootComponent.h"
 #include "Widgets/CUserWidget_ActionContainer.h"
 #include "Widgets/CUserWidget_ActionItem.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -27,6 +28,7 @@ ACPlayer::ACPlayer()
 	CHelpers::CreateActorComponent(this, &Status, "Status");
 	CHelpers::CreateActorComponent(this, &Option, "Option");
 	CHelpers::CreateActorComponent(this, &State, "State");
+	CHelpers::CreateActorComponent(this, &Foot, "Foot");
 
 	//Component Settings
 	GetMesh()->SetRelativeLocation(FVector(0, 0, -88));

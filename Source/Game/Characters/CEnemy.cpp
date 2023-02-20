@@ -193,6 +193,7 @@ void ACEnemy::Dead()
 
 	//Ragdoll
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetMesh()->SetCollisionProfileName("Ragdoll");
 	GetMesh()->GlobalAnimRateScale = 0.f;
 	GetMesh()->SetSimulatePhysics(true);
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);

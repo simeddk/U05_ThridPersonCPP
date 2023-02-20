@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
 #include "Components/CActionComponent.h"
+#include "Components/CFootComponent.h"
 #include "CAnimInstance.generated.h"
 
 UCLASS()
@@ -19,6 +20,9 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		EActionType ActionType;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+		FFootData FootData;
 
 public:
 	virtual void NativeBeginPlay() override;

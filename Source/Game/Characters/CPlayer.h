@@ -40,6 +40,9 @@ private:
 
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCActionComponent* Action;
+	
+	UPROPERTY(VisibleDefaultsOnly)
+		class UCFootComponent* Foot;
 
 protected:
 	virtual void BeginPlay() override;
