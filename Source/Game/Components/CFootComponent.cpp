@@ -2,6 +2,7 @@
 #include "Global.h"
 #include "GameFramework/Character.h"
 #include "Components/CapsuleComponent.h"
+#include "Engine/TriggerVolume.h"
 
 UCFootComponent::UCFootComponent()
 {
@@ -16,6 +17,16 @@ void UCFootComponent::BeginPlay()
 
 	OwnerCharacter = Cast<ACharacter>(GetOwner());
 	CapsuleHalfHeight = OwnerCharacter->GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
+
+	TArray<AActor*> actors;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATriggerVolume::StaticClass(), actors);
+	CheckTrue(actors.Num() < 1);
+
+	for (AActor* actor : actors)
+	{
+		actor->OnActorBeginOverlap.AddDynamic(this, &UCFootComponent::OnActorBeginOverlap);
+		actor->OnActorEndOverlap.AddDynamic(this, &UCFootComponent::OnActorEndOverlap);
+	}
 }
 
 
@@ -34,10 +45,12 @@ void UCFootComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 	float offset = FMath::Min(leftDistance, rightDistance);
 
 	Data.PelvisDistance.Z = UKismetMathLibrary::FInterpTo(Data.PelvisDistance.Z, offset, DeltaTime, InterpSpeed);
+
 	Data.LeftDistance.X = UKismetMathLibrary::FInterpTo(Data.LeftDistance.X, (leftDistance - offset), DeltaTime, InterpSpeed);
 	Data.RightDistance.X = UKismetMathLibrary::FInterpTo(Data.RightDistance.X, -(rightDistance - offset), DeltaTime, InterpSpeed);
 
-	//Todo.. 구조체에 저장을 안했네...
+	Data.LeftRotation = UKismetMathLibrary::RInterpTo(Data.LeftRotation, leftRotatoin, DeltaTime, InterpSpeed);
+	Data.RightRotation = UKismetMathLibrary::RInterpTo(Data.RightRotation, rightRotatoin, DeltaTime, InterpSpeed);
 }
 
 void UCFootComponent::Trace(FName InSocketName, float& OutDistance, FRotator& OutRotatoin)
@@ -89,6 +102,21 @@ void UCFootComponent::Trace(FName InSocketName, float& OutDistance, FRotator& Ou
 	float roll = UKismetMathLibrary::DegAtan2(normal.Y, normal.Z);
 	float pitch = -UKismetMathLibrary::DegAtan2(normal.X, normal.Z);
 
+	roll = FMath::Clamp(roll, -15.f, 15.f);
+	pitch = FMath::Clamp(pitch, -30.f, 30.f);
+
 	OutRotatoin = FRotator(pitch, 0, roll);
+}
+
+void UCFootComponent::OnActorBeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
+{
+	CheckNull(Cast<ACharacter>(OtherActor));
+	bActive = true;
+}
+
+void UCFootComponent::OnActorEndOverlap(AActor* OverlappedActor, AActor* OtherActor)
+{
+	CheckNull(Cast<ACharacter>(OtherActor));
+	bActive = false;
 }
 

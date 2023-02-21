@@ -37,6 +37,7 @@ public:
 	UCFootComponent();
 
 	FORCEINLINE const FFootData& GetData() { return Data; }
+	FORCEINLINE bool IsIK() { return bActive; }
 
 protected:
 	virtual void BeginPlay() override;
@@ -46,6 +47,12 @@ public:
 
 private:
 	void Trace(FName InSocketName, float& OutDistance, FRotator& OutRotatoin);
+
+	UFUNCTION()
+		void OnActorBeginOverlap(AActor* OverlappedActor, AActor* OtherActor);
+
+	UFUNCTION()
+		void OnActorEndOverlap(AActor* OverlappedActor, AActor* OtherActor);
 
 protected:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "IK")
@@ -71,4 +78,6 @@ private:
 	float CapsuleHalfHeight;
 
 	FFootData Data;
+
+	bool bActive;
 };
